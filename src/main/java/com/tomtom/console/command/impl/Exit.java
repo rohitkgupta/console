@@ -1,10 +1,10 @@
 package com.tomtom.console.command.impl;
 
 import com.tomtom.console.command.ExecutableCommand;
-import com.tomtom.console.command.HelpableCommand;
+import com.tomtom.console.command.HelpTextCommand;
 
 
-public class Exit implements ExecutableCommand, HelpableCommand {
+public class Exit implements ExecutableCommand, HelpTextCommand {
     private String name;
 
     public Exit(String name) {

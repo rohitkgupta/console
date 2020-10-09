@@ -1,5 +1,5 @@
 package com.tomtom.console.command;
 
-public interface HelpableCommand extends Command {
+public interface HelpTextCommand extends Command {
     String getHelpText();
 }

@@ -1,13 +1,13 @@
 package com.tomtom.console.command.impl;
 
 import com.tomtom.console.command.ExecutableCommand;
-import com.tomtom.console.command.HelpableCommand;
+import com.tomtom.console.command.HelpTextCommand;
 
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class Time implements ExecutableCommand, HelpableCommand {
+public class Time implements ExecutableCommand, HelpTextCommand {
     private String name;
     private Format formatter = new SimpleDateFormat("hh:mm:ss a");
 

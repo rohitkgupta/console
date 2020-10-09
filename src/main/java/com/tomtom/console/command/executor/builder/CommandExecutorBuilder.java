@@ -1,4 +1,4 @@
-package com.tomtom.console.command.parser;
+package com.tomtom.console.command.executor.builder;
 
 import com.tomtom.console.command.Command;
 import com.tomtom.console.command.ExecutableCommand;
@@ -6,15 +6,30 @@ import com.tomtom.console.command.executor.Executor;
 import com.tomtom.console.command.executor.impl.*;
 import com.tomtom.console.command.service.CommandService;
 import com.tomtom.console.exception.CommandNotFoundException;
+import com.tomtom.console.exception.InvalidCommandException;
 import org.apache.commons.lang3.StringUtils;
 
 
-public class CommandParser {
+public class CommandExecutorBuilder {
     private static final String COMMAND_SEPARATOR = " ";
     private CommandService commandService = CommandService.getInstance();
+    private static CommandExecutorBuilder INSTANCE = null;
 
+    private CommandExecutorBuilder() {
+    }
 
-    public Executor getCommandExecutor(String inputCommand) throws CommandNotFoundException {
+    public static CommandExecutorBuilder getInstance() {
+        if (INSTANCE == null) {
+            synchronized (CommandExecutorBuilder.class) {
+                if (INSTANCE == null) {
+                    INSTANCE = new CommandExecutorBuilder();
+                }
+            }
+        }
+        return INSTANCE;
+    }
+
+    public Executor getCommandExecutor(String inputCommand) throws CommandNotFoundException, InvalidCommandException {
         if (isValidCommand(inputCommand)) {
             String commandName = getCommand(inputCommand);
             String[] params = getParams(inputCommand);
@@ -24,8 +39,9 @@ public class CommandParser {
             } else {
                 throw new CommandNotFoundException(commandName + ": command not found");
             }
+        } else {
+            throw new InvalidCommandException("Invalid command.");
         }
-        return null;
     }
 
     private String getCommand(String inputCommand) {

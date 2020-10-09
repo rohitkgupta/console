@@ -1,20 +1,27 @@
 package com.tomtom.console.core;
 
 import com.tomtom.console.command.Command;
-import com.tomtom.console.command.executor.Executor;
-import com.tomtom.console.command.parser.CommandParser;
+import com.tomtom.console.command.executor.builder.*;
 import com.tomtom.console.command.service.CommandService;
 import com.tomtom.console.exception.CommandNotFoundException;
+import com.tomtom.console.exception.InvalidCommandException;
 
-public final class Console {
-    private static final Console INSTANCE = new Console();
+public class Console {
+    private static Console INSTANCE = null;
     private CommandService commandService = CommandService.getInstance();
-    private CommandParser commandParser = new CommandParser();
+    private CommandExecutorBuilder executorBuilder = CommandExecutorBuilder.getInstance();
 
     private Console() {
     }
 
     public static Console getInstance() {
+        if (INSTANCE == null) {
+            synchronized (Console.class) {
+                if (INSTANCE == null) {
+                    INSTANCE = new Console();
+                }
+            }
+        }
         return INSTANCE;
     }
 
@@ -22,13 +29,8 @@ public final class Console {
         commandService.registerCommand(command);
     }
 
-    public String executeCommand(String command) throws CommandNotFoundException {
-        Executor executor = commandParser.getCommandExecutor(command);
-        if (executor != null) {
-            return executor.execute();
-        } else {
-            return null;
-        }
+    public String executeCommand(String command) throws CommandNotFoundException, InvalidCommandException {
+        return executorBuilder.getCommandExecutor(command).execute();
     }
 
 }

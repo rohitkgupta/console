@@ -9,13 +9,20 @@ import java.util.List;
 import java.util.Map;
 
 public class CommandService {
-    private static final CommandService INSTANCE = new CommandService();
+    private static CommandService INSTANCE = null;
     private Map<String, Command> commands = new HashMap<>();
 
     private CommandService() {
     }
 
     public static CommandService getInstance() {
+        if (INSTANCE == null) {
+            synchronized (CommandService.class) {
+                if (INSTANCE == null) {
+                    INSTANCE = new CommandService();
+                }
+            }
+        }
         return INSTANCE;
     }
 

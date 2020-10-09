@@ -2,6 +2,7 @@ package com.tomtom.console.terminal;
 
 import com.tomtom.console.core.Console;
 import com.tomtom.console.exception.CommandNotFoundException;
+import com.tomtom.console.exception.InvalidCommandException;
 import com.tomtom.console.user.User;
 import org.apache.commons.lang3.StringUtils;
 
@@ -16,7 +17,7 @@ public class Terminal {
 
     public Terminal(User user) {
         this.user = user;
-        consolePrefix = getComputerName() + ": " + user.getName() + ">";
+        consolePrefix = getConsolePrefix(user);
         printConsolePrefix();
     }
 
@@ -26,6 +27,7 @@ public class Terminal {
             printResult(result);
         } catch (CommandNotFoundException e) {
             printResult(e.getMessage());
+        } catch (InvalidCommandException e) {
         }
         printConsolePrefix();
     }
@@ -39,6 +41,10 @@ public class Terminal {
         if (StringUtils.isNotBlank(result)) {
             System.out.println(result);
         }
+    }
+
+    private String getConsolePrefix(User user) {
+        return getComputerName() + ": " + user.getName() + ">";
     }
 
     private String getComputerName() {

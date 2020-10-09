@@ -2,14 +2,14 @@ package com.tomtom.console.command.impl;
 
 import com.tomtom.console.command.Command;
 import com.tomtom.console.command.ExecutableCommand;
-import com.tomtom.console.command.HelpableCommand;
+import com.tomtom.console.command.HelpTextCommand;
 import com.tomtom.console.command.executor.impl.HelpExecutor;
 import com.tomtom.console.command.service.CommandService;
 import com.tomtom.console.exception.CommandNotFoundException;
 
 import java.util.stream.Collectors;
 
-public class Help implements ExecutableCommand, HelpableCommand {
+public class Help implements ExecutableCommand, HelpTextCommand {
     private String name;
     private CommandService commandService = CommandService.getInstance();
 
@@ -25,13 +25,13 @@ public class Help implements ExecutableCommand, HelpableCommand {
     @Override
     public String execute(String... params) {
         if (params == null || params.length == 0) {
-            return commandService.getAllCommands().stream().map(Command::getCommandName).collect(Collectors.joining("\n"));
+            return commandService.getAllCommands().stream().map(command -> command.getCommandName()).collect(Collectors.joining("\n"));
         } else {
             String commandName = params[0];
             try {
                 Command command = commandService.getCommand(commandName);
-                if (command instanceof HelpableCommand) {
-                    return new HelpExecutor((HelpableCommand) command).execute();
+                if (command instanceof HelpTextCommand) {
+                    return new HelpExecutor((HelpTextCommand) command).execute();
                 } else {
                     return getCommandNotFoundMessage(commandName);
                 }

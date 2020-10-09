@@ -1,10 +1,10 @@
 package com.tomtom.console.command.impl;
 
 import com.tomtom.console.command.ExecutableCommand;
-import com.tomtom.console.command.HelpableCommand;
+import com.tomtom.console.command.HelpTextCommand;
 
 
-public class Print implements ExecutableCommand, HelpableCommand {
+public class Print implements ExecutableCommand, HelpTextCommand {
     private String name;
 
     public Print(String name) {
