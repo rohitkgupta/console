@@ -1,5 +1,6 @@
 # Command Console
 This project is written in Java and uses gradle for build.
+Check console-class-diagram.png file for low level class diagram. 
 
 ####Build Steps:
 chmod +x gradlew
