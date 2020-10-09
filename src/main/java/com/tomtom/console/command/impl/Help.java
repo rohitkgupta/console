@@ -1,13 +1,15 @@
 package com.tomtom.console.command.impl;
 
 import com.tomtom.console.command.Command;
+import com.tomtom.console.command.ExecutableCommand;
+import com.tomtom.console.command.HelpableCommand;
 import com.tomtom.console.command.executor.impl.HelpExecutor;
 import com.tomtom.console.command.service.CommandService;
 import com.tomtom.console.exception.CommandNotFoundException;
 
 import java.util.stream.Collectors;
 
-public class Help implements Command {
+public class Help implements ExecutableCommand, HelpableCommand {
     private String name;
     private CommandService commandService = CommandService.getInstance();
 
@@ -23,12 +25,18 @@ public class Help implements Command {
     @Override
     public String execute(String... params) {
         if (params == null || params.length == 0) {
-            return commandService.getAllCommands().stream().map(command -> command.getCommandName()).collect(Collectors.joining("\n"));
+            return commandService.getAllCommands().stream().map(Command::getCommandName).collect(Collectors.joining("\n"));
         } else {
+            String commandName = params[0];
             try {
-                return new HelpExecutor(commandService.getCommand(params[0])).execute();
+                Command command = commandService.getCommand(commandName);
+                if (command instanceof HelpableCommand) {
+                    return new HelpExecutor((HelpableCommand) command).execute();
+                } else {
+                    return getCommandNotFoundMessage(commandName);
+                }
             } catch (CommandNotFoundException e) {
-                return getCommandNotFoundMessage(params[0]);
+                return getCommandNotFoundMessage(commandName);
             }
         }
     }
@@ -40,6 +48,6 @@ public class Help implements Command {
     @Override
     public String getHelpText() {
         return "Display helpful information about commands.\n" +
-                "Usage : " + this.getCommandName()+" [command]";
+                "Usage : " + this.getCommandName() + " [command]";
     }
 }

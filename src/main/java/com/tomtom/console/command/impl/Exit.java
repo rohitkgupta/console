@@ -1,12 +1,10 @@
 package com.tomtom.console.command.impl;
 
-import com.tomtom.console.command.Command;
+import com.tomtom.console.command.ExecutableCommand;
+import com.tomtom.console.command.HelpableCommand;
 
-import java.text.Format;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
-public class Exit implements Command {
+public class Exit implements ExecutableCommand, HelpableCommand {
     private String name;
 
     public Exit(String name) {

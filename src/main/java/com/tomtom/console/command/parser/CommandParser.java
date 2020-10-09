@@ -1,5 +1,7 @@
 package com.tomtom.console.command.parser;
 
+import com.tomtom.console.command.Command;
+import com.tomtom.console.command.ExecutableCommand;
 import com.tomtom.console.command.executor.Executor;
 import com.tomtom.console.command.executor.impl.*;
 import com.tomtom.console.command.service.CommandService;
@@ -16,7 +18,12 @@ public class CommandParser {
         if (isValidCommand(inputCommand)) {
             String commandName = getCommand(inputCommand);
             String[] params = getParams(inputCommand);
-            return new CommandExecutor(commandService.getCommand(commandName), params);
+            Command command = commandService.getCommand(commandName);
+            if (command instanceof ExecutableCommand) {
+                return new CommandExecutor((ExecutableCommand) command, params);
+            } else {
+                throw new CommandNotFoundException(commandName + ": command not found");
+            }
         }
         return null;
     }

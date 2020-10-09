@@ -1,12 +1,12 @@
 package com.tomtom.console.command.executor.impl;
 
-import com.tomtom.console.command.Command;
+import com.tomtom.console.command.HelpableCommand;
 import com.tomtom.console.command.executor.Executor;
 
 public class HelpExecutor implements Executor {
-    private Command command;
+    private HelpableCommand command;
 
-    public HelpExecutor(Command command) {
+    public HelpExecutor(HelpableCommand command) {
         this.command = command;
     }
 
