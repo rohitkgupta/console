@@ -3,12 +3,16 @@ This project is written in Java and uses gradle for build.
 Check console-class-diagram.png file for low level class diagram. 
 
 ####Build Steps:
+
+chmod +x gradle
+
 chmod +x gradlew
 
 ./gradlew clean build  
 It will run all the test cases and build jar file under build/libs
 
 ####Execution Steps:
+
 java -jar build/libs/console-0.0.1-SNAPSHOT.jar
 
 It will ask for user name to start a new terminal like below.
